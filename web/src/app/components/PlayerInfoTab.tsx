@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import logo from "../../assets/images/riot_logo_white.png";
 import GunStrats from "./GunStrats";
+import statsReducer from "../../Reducers/StatsReducer";
 
 const PlayerInfoTab: React.FC = () => {
-  const [gunOut, setGunOut] = useState(true);
-  const [dateTime, setDateTime] = useState({ date: "11-07-23", time: "21:22" });
-  const [rewardTimer, setRewardTimer] = useState("02:00");
-  const [playerID, setPlayerID] = useState(69);
-  const [playerBankcreds, setPlayerBankCreds] = useState(2500000);
-  const [playerCash, setPlayerCash] = useState(3000);
-  const [playerJob, setPlayerJob] = useState({
-    job: "Unemployed",
-    rank: "N/A",
-  });
+  const defaultVaules = {
+    gunOut: true,
+    dateTime: { date: "11-07-23", time: "21:22" },
+    rewardTimer: "02:00",
+    playerID: 69,
+    playerBankcreds: 2500000,
+    playerCash: 3000,
+    playerJob: {
+      job: "Unemployed",
+      rank: "N/A",
+    },
+  };
+
+  const [state, dispatch] = useReducer(statsReducer, defaultVaules);
 
   const currencyFormatter = (money: number) => {
     var usFormat = money.toLocaleString("en-US");
@@ -38,8 +43,8 @@ const PlayerInfoTab: React.FC = () => {
               textAlign: "right",
             }}
           >
-            <p style={{ marginTop: 22 }}>{playerJob.job}</p>
-            <p style={{ fontWeight: 500 }}>{playerJob.rank}</p>
+            <p style={{ marginTop: 22 }}>{state.playerJob.job}</p>
+            <p style={{ fontWeight: 500 }}>{state.playerJob.rank}</p>
           </div>
           <div
             className="dateTimeTab"
@@ -51,7 +56,7 @@ const PlayerInfoTab: React.FC = () => {
           >
             <p style={{ marginTop: 22, fontWeight: 500 }}>discord.gg/riotrp</p>
             <p>
-              {dateTime.time} {dateTime.date}
+              {state.dateTime.time} {state.dateTime.date}
             </p>
           </div>
           <div
@@ -64,7 +69,7 @@ const PlayerInfoTab: React.FC = () => {
             }}
           >
             <p style={{ marginTop: 22 }}>Reward Timer</p>
-            <p style={{ fontWeight: 500 }}>{rewardTimer}</p>
+            <p style={{ fontWeight: 500 }}>{state.rewardTimer}</p>
           </div>
           <div
             className="playerID"
@@ -76,7 +81,7 @@ const PlayerInfoTab: React.FC = () => {
             }}
           >
             <p style={{ marginTop: 22 }}>ID</p>
-            <p style={{ fontWeight: 500 }}>{playerID}</p>
+            <p style={{ fontWeight: 500 }}>{state.playerID}</p>
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "row-reverse" }}>
@@ -90,7 +95,7 @@ const PlayerInfoTab: React.FC = () => {
                 textAlign: "right",
               }}
             >
-              {currencyFormatter(playerBankcreds)}
+              {currencyFormatter(state.playerBankcreds)}
             </p>
           </div>
         </div>
@@ -103,7 +108,7 @@ const PlayerInfoTab: React.FC = () => {
                 textAlign: "right",
               }}
             >
-              {currencyFormatter(playerCash)}
+              {currencyFormatter(state.playerCash)}
             </p>
           </div>
         </div>
@@ -117,11 +122,11 @@ const PlayerInfoTab: React.FC = () => {
                 textAlign: "right",
               }}
             >
-              {currencyFormatter(playerCash)}
+              {currencyFormatter(state.playerCash)}
             </p>
           </div>
         </div>
-        {gunOut && <GunStrats />}
+        <GunStrats gunOut={state.gunOut} />
       </div>
     </>
   );

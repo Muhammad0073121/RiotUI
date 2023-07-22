@@ -6,6 +6,7 @@ import background from "../assets/images/temp_background.png";
 import blank_bg from "../assets/images/blank_bg.jpg";
 import PlayerInfoTab from "./components/PlayerInfoTab";
 import PlayerStatsBar from "./components/PlayerStatsBar";
+import Speedometer from "./components/Speedometer";
 
 debugData([
   {
@@ -25,13 +26,15 @@ const Hud: React.FC = () => {
     <div className="nui-wrapper" style={backgroundStyle}>
       <div className="container">
         <div className="row">
-          <div>Chat box column</div>
+          <div></div>
           <PlayerStatsBar />
         </div>
 
-        <div className="row">Column 2</div>
+        <div className="row"></div>
         <div className="row">
           <PlayerInfoTab />
+
+          <Speedometer />
         </div>
       </div>
     </div>

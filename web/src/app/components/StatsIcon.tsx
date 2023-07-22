@@ -1,50 +1,44 @@
-import React, { useReducer } from "react";
-import { ICONDATAKIND } from "../../Reducers/progressbarReducers/MicIconReducer";
-import micReducer from "../../Reducers/progressbarReducers/MicIconReducer";
+import React, { useEffect } from "react";
+import { ICONDATAKIND } from "../../Reducers/IconReducer";
 
-const StatsIcon: React.FC = () => {
-  const defaultValues: ICONDATAKIND = {
-    iconProgress: 40,
-    highlightColor: "#7ef542",
-    activeColor: "#d9d923",
-    nowActive: false,
-    behaviour: "whenabovezero",
-    icon: "micIcon.png",
+const StatsIcon: React.FC<any> = (props: { data: ICONDATAKIND }) => {
+  const passedValues = props.data;
+
+  const gradiant = `linear-gradient( to top, ${
+    passedValues.nowActive
+      ? passedValues.activeColor
+      : passedValues.highlightColor
+  } 0%,${
+    passedValues.nowActive
+      ? passedValues.activeColor
+      : passedValues.highlightColor
+  } ${passedValues.iconProgress}%, rgba(242, 206, 209,0.2) ${
+    passedValues.iconProgress + 1
+  }%, rgba(242, 206, 209,0.2) 100%)`;
+
+  const styleSheet = {
+    background: `${gradiant}`,
+    fontSize: "30px",
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    color: "transparent",
   };
-  const [state, dispatch] = useReducer(micReducer, defaultValues);
-
-  function checkVisibility() {
-    let visible = true;
-    if (state.behaviour === "always-on") {
-      return true;
-    } else if (state.behaviour === "whenabovezero") {
-      state.iconProgress > 0 ? (visible = true) : (visible = false);
-    } else if (state.behaviour === "whenbelowhundred") {
-      state.iconProgress < 100 ? (visible = true) : (visible = false);
-    }
-    return visible;
-  }
   return (
     <>
-      {checkVisibility() && (
+      {passedValues.visible && (
         <div
-          className="statsicon"
           style={{
-            background: `linear-gradient( to top,${
-              state.nowActive ? state.activeColor : state.highlightColor
-            } 0%,${
-              state.nowActive ? state.activeColor : state.highlightColor
-            } ${
-              state.iconProgress
-            }%,rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.3) 100%)`,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            bottom: 5,
+            position: "relative",
+            display: "inline",
+            marginLeft: 10,
+            marginBottom: 10,
           }}
         >
-          <img src={`/src/assets/images/${state.icon}`} height={20} />
+          <i
+            className={`fa fa-solid fa-${passedValues.icon}`}
+            style={styleSheet}
+            key={gradiant}
+          ></i>
         </div>
       )}
     </>
